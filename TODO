@@ -1,4 +1,4 @@
 Cosas a tener en cuenta:
 
 map->file
-No guarda las líneas que solo contienen un salto de línea.
+	· No guarda las líneas que solo contienen un salto de línea.

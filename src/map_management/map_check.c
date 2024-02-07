@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 01:38:26 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/07 03:51:08 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:04:17 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,24 @@ void	map_height(t_map *map, int i)
 
 void	check_first_line(t_map *map)
 {
-	int	i;
-	int	j;
+	int		i;
+	char	*trimed;
 
 	i = 0;
-	j = 0;
-	while (map->file[i][0] != '1')
-		i++;
-	while (j < (int)ft_strlen(map->file[i]))
+	trimed = ft_strtrim(map->file[map->file_lines - map->height - 1], " ");
+	if (ft_strlen(trimed) < 3)
 	{
-		if (map->file[i][j] != '1')
+		printf("Error: First line has only %i char.\n", (int)ft_strlen(trimed));
+		free_srcs(map);
+	}
+	while (i < (int)ft_strlen(trimed))
+	{
+		if (trimed[i] != '1')
 		{
-			printf("Error 1: Invalid first line: %s\n", map->file[i]);
-			exit(0);
+			printf("Error 1: Invalid first line: %s\n", trimed);
+			free_srcs(map);
 		}
-		j++;
+		i++;
 	}
 }
 
@@ -91,5 +94,7 @@ void check_map(int fd, t_map *map)
 	map->file_lines = count_lines(map->file);
 	check_map_pos(map);
 	check_first_line(map);
+	printf("Number of lines: %i\nMap height: %i\n", map->file_lines, map->height);
+	printf("First line of map: (%i) -> (%s)\n", map->file_lines - map->height, map->file[map->file_lines - map->height - 1]);
 	//check_body(map);
 }

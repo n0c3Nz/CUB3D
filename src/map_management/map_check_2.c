@@ -52,20 +52,28 @@ int go_to_map(int fd)
 
 void check_map_pos(t_map *map)
 {
-	int	i;
+	int		i;
+	char	*trimed;
 
 	i = 0;
-	while (map->file[i][0] != '1')
-		i++;
+	trimed = ft_strtrim(map->file[i], " ");
+	while (trimed[0] != '1')
+		trimed = ft_strtrim(map->file[i++], " ");
 	map_height(map, i);
 	i = map->height;
+	trimed = ft_strtrim(map->file[i], " ");
 	while (i < map->file_lines)
 	{
-		if (map->file[i][0] != '1' && map->file[i][0] != '\0')
+		if (trimed[0] != '1' && trimed[0] != '\0')
 		{
 			printf("Error: Map is not found in the last instance\n");
 			free_srcs(map);
 		}
-		i++;
+		trimed = ft_strtrim(map->file[i++], " ");
 	}
+    if (trimed[0] != '1' && trimed[0] != '\0')
+    {
+        printf("Error: Map is not found in the last instance\n");
+        free_srcs(map);
+    }
 }
