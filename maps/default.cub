@@ -1,15 +1,19 @@
-NO ./ruta_a_la_textura_norte
-SO ./ruta_a_la_textura_sur
-WE ./ruta_a_la_textura_oeste
-EA ./ruta_a_la_textura_este
+NO ./TODO
+SO ./TODO
+WE ./TODO
+EA ./TODO
 F 255,255,0
 C 0,0,255
 
-111111111
+
+
+111
 10000011
 100N0001
-100001
+1000hola01
 10001111
 10000011
 10001
 11111111
+11111
+111111

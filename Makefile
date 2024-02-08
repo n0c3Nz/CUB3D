@@ -5,8 +5,10 @@ CFLAGS = -Wall -Wextra -Werror #-fsanitize=thread
 LFLAGS = -L./inc/Libft -lft -L./inc/mlx -L./inc/get_next_line -lget_next_line -lmlx -framework OpenGL -framework AppKit
 
 SRC = main.c \
-		./src/map_management/map_check.c \
-		./src/map_management/map_check_2.c \
+		./src/map_management/file_check.c \
+		./src/map_management/file_check_2.c \
+		./src/map_management/file_check_3.c \
+		./src/map_management/map_check.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -15,7 +15,6 @@
 #define DEBUG_TRACE_EXIT printf("Saliendo de la función %s\n", __func__);
 
 
-
 typedef struct s_player
 {
 	int     x;
@@ -28,7 +27,12 @@ typedef struct s_map
 	int			file_lines;
 	int			**map;
 	char		**file;
-	int			width;
+	char		*no;
+	char		*so;
+	char		*we;
+	char		*ea;
+	int		**c;
+	int		**f;
 	int			height;
 }           t_map;
 
@@ -38,10 +42,15 @@ typedef struct s_map
 void	process_map(int fd, t_map *map, char **argv);
 int		go_to_map(int fd);
 void	check_map(int fd, t_map *map);
+int		count_lines(char **file);
+void	check_map_pos(t_map *map);
+void	map_height(t_map *map, int i);
 void	check_first_line(t_map *map);
 void	check_body(char *line);
-void	check_map_pos(t_map *map);
-int		count_lines(char **file);
-void	map_height(t_map *map, int i);
+void	element_finder(t_map *map);
+void	is_valid_rgb(char *str, t_map *map, char id);
+void	rute_filler(t_map *map, char *rute, char *valid_rute);
 /*			FREE SRCS			*/
 void	free_srcs(t_map *map);
+int		**ft_split_int(char *s, char c);
+void	rgb_is_digit(char **strs);
