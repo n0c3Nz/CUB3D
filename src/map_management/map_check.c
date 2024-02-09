@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_check.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/09 16:30:22 by guortun-          #+#    #+#             */
+/*   Updated: 2024/02/09 16:38:56 by guortun-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "CUB3D.h"
 
 void	check_first_line(t_map *map)
@@ -23,31 +35,33 @@ void	check_first_line(t_map *map)
 	}
 }
 
-void check_body(char *line)
+void check_body(t_map *map)
 {
-	int i = 0;
+	int	i;
+	int	j;
 
-	if (line[i] != '1')
+	i = map->file_lines - map->height;
+	while (i < map->file_lines)
 	{
-		printf("%c\n", line[i]);
-		printf("Error 2: Invalid map\n");
-		exit(1);
-	}
-	while (line[i] != '\0' && line[i] != '\n')
-	{
-		if (line[i] != '1' && line[i] != '0')
+		j = 0;
+		while (j < (int)ft_strlen(map->file[i]))
 		{
-			printf("%c\n", line[i]);
-			printf("Error 3: Invalid map\n");
-			exit(1);
+			if (map->file[i][j] != '1' && map->file[i][j] != '0' &&
+				map->file[i][j] != ' ')
+			{
+				printf("\nError: Invalid character in map\n");
+				free_srcs(map);
+			}
+			j++;
+		}
+		if ((map->file[i][0] != '1' && map->file[i][0] != ' ') ||
+			(map->file[i][ft_strlen(map->file[i]) - 1] != '1' &&
+			map->file[i][ft_strlen(map->file[i]) - 1] != ' '))
+		{
+			printf("\nError: Invalid first or last character in map line\n");
+			free_srcs(map);
 		}
 		i++;
-	}
-	if (line[i - 1] != '1')
-	{
-		printf("%c\n", line[i - 1]);
-		printf("Error 4: Invalid map\n");
-		exit(1);
 	}
 }
 

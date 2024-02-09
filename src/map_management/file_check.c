@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 01:38:26 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/08 18:00:07 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:27:56 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ void check_map(int fd, t_map *map)
 	map->file_lines = count_lines(map->file);
 	check_map_pos(map);
 	element_finder(map);
-	printf("C RGB: %i %i %i\nF RGB: %i %i %i", map->c[0][0], map->c[1][0], map->c[2][0], map->f[0][0], map->f[1][0], map->f[2][0]);
+	printf("\nC RGB: %i %i %i\nF RGB: %i %i %i\n", map->c[0][0], map->c[1][0], map->c[2][0], map->f[0][0], map->f[1][0], map->f[2][0]);
 	check_first_line(map);
+	check_body(map);
 	printf("\nNumber of lines: %i\nMap height: %i\n", map->file_lines, map->height);
 	printf("First line of map: (%i) -> (%s)\n", map->file_lines - map->height, map->file[map->file_lines - map->height - 1]);
 	//check_body(map);
@@ -90,24 +91,3 @@ int		**ft_split_int(char *s, char c)
     return (ints);
 }
 
-void	rgb_is_digit(char **strs)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (strs[i])
-	{
-		j = 0;
-		while (strs[i][j])
-		{
-			if (!ft_isdigit(strs[i][j]))
-			{
-				printf("Error: RGB is not a digit\n");
-				exit(1);
-			}
-			j++;
-		}
-		i++;
-	}
-}

@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 11:19:29 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/08 16:16:04 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/02/09 16:34:20 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void check_map_pos(t_map *map)
 	{
 		if (trimed[0] != '1' && trimed[0] != '\0')
 		{
-			printf("Error: Map is not found in the last instance -> %s\n", trimed);
+			printf("Error: Map is not found in the last instance or is open\n");
 			free_srcs(map);
 		}
 		trimed = ft_strtrim(map->file[i++], " \t");

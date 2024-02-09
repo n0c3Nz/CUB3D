@@ -46,7 +46,7 @@ int		count_lines(char **file);
 void	check_map_pos(t_map *map);
 void	map_height(t_map *map, int i);
 void	check_first_line(t_map *map);
-void	check_body(char *line);
+void	check_body(t_map *map);
 void	element_finder(t_map *map);
 void	is_valid_rgb(char *str, t_map *map, char id);
 void	rute_filler(t_map *map, char *rute, char *valid_rute);

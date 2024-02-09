@@ -32,3 +32,25 @@ void	is_valid_rgb(char *str, t_map *map, char id)
 		free_srcs(map);
 	}
 }
+
+void	rgb_is_digit(char **strs)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (strs[i])
+	{
+		j = 0;
+		while (strs[i][j])
+		{
+			if (!ft_isdigit(strs[i][j]))
+			{
+				printf("Error: RGB is not a digit\n");
+				exit(1);
+			}
+			j++;
+		}
+		i++;
+	}
+}
