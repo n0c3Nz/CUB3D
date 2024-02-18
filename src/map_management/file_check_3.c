@@ -1,5 +1,19 @@
 #include "CUB3D.h"
 
+void dump_map(t_map *map)
+{
+	int i;
+	int j;
+	int map_lines;
+
+	j = 0;
+	map_lines = map->height;
+	map->map = malloc(sizeof(char *) * map_lines + 1);
+	i = map->file_lines - map->height - 1;
+	while (i < map->file_lines)
+		map->map[j++] = map->file[i++];
+	map->map[j] = NULL;
+}
 
 void	rute_filler(t_map *map, char *rute, char *valid_rute)
 {

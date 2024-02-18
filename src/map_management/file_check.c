@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 01:38:26 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/09 16:27:56 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/02/18 15:05:59 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,16 +52,18 @@ void check_map(int fd, t_map *map)
 
 	while ((bytes_read = read(fd, buffer, BUFFER)) > 0)
 		buffer[bytes_read] = '\0';
+	map->player_count = 0;
 	map->file = ft_split(buffer, '\n');
 	map->file_lines = count_lines(map->file);
 	check_map_pos(map);
 	element_finder(map);
 	printf("\nC RGB: %i %i %i\nF RGB: %i %i %i\n", map->c[0][0], map->c[1][0], map->c[2][0], map->f[0][0], map->f[1][0], map->f[2][0]);
+	dump_map(map);
 	check_first_line(map);
 	check_body(map);
+	check_last_line(map);
 	printf("\nNumber of lines: %i\nMap height: %i\n", map->file_lines, map->height);
 	printf("First line of map: (%i) -> (%s)\n", map->file_lines - map->height, map->file[map->file_lines - map->height - 1]);
-	//check_body(map);
 }
 
 int		**ft_split_int(char *s, char c)
@@ -90,4 +92,3 @@ int		**ft_split_int(char *s, char c)
     }
     return (ints);
 }
-

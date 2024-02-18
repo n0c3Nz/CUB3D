@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 11:19:29 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/09 16:34:20 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:40:37 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,3 +146,4 @@ void	element_finder(t_map *map)
 		free_srcs(map);
 	}
 }
+
