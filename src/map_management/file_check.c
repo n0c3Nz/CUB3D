@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 01:38:26 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/18 15:05:59 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:57:36 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	map_height(t_map *map, int i)
 {
-	map->height = map->file_lines - i;
+	map->height = i;
+	map->map_size = map->file_lines - i;
 	if (map->height < 3)
 	{
 		printf("Error 5: Invalid size map\n");
@@ -63,7 +64,6 @@ void check_map(int fd, t_map *map)
 	check_body(map);
 	check_last_line(map);
 	printf("\nNumber of lines: %i\nMap height: %i\n", map->file_lines, map->height);
-	printf("First line of map: (%i) -> (%s)\n", map->file_lines - map->height, map->file[map->file_lines - map->height - 1]);
 }
 
 int		**ft_split_int(char *s, char c)

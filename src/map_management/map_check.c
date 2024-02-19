@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:30:22 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/18 15:12:13 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:44:29 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,24 @@ void check_first_line(t_map *map)
 		i++;
 	}
 }
+static void get_fov(t_map *map)
+{
+	if (map->player->dir == 'N')
+		map->player->fov = 0;
+	else if (map->player->dir == 'S')
+		map->player->fov = 180;
+	else if (map->player->dir == 'E')
+		map->player->fov = 90;
+	else if (map->player->dir == 'W')
+		map->player->fov = 270;
+	map->player->fov_angle = map->player->fov * (M_PI / 180);
+	map->player->fov_start = map->player->dir - (map->player->fov_angle / 2);
+	map->player->fov_end = map->player->dir + (map->player->fov_angle / 2);
+	printf("Player FOV: %i\n", map->player->fov);
+	printf("Player FOV Angle: %i\n", map->player->fov_angle);
+	printf("Player FOV Start: %i\n", map->player->fov_start);
+	printf("Player FOV End: %i\n", map->player->fov_end);
+}
 
 static int is_player(t_map *map, char *direction, int y, int x)
 {
@@ -43,6 +61,7 @@ static int is_player(t_map *map, char *direction, int y, int x)
 		map->player_count = map->player_count + 1;
 		printf("Player found at %i, %i\n", y, x - 1);
 		map->player->dir = direction[0];
+		get_fov(map);
 		map->player->x = x - 1;
 		map->player->y = y;
 		if (map->player_count > 1)
@@ -60,7 +79,7 @@ void check_body(t_map *map)
 	char *trimed;
 
 	i = 0;
-	while (i < map->height)
+	while (i < map->file_lines - map->height)
 	{
 		trimed = ft_strtrim(map->map[i], " \t");
 		if (ft_strlen(trimed) < 3)
@@ -99,9 +118,11 @@ void check_last_line(t_map *map)
 {
 	int i;
 	char *trimed;
+	int	map_lines;
 
 	i = 0;
-	trimed = ft_strtrim(map->map[map->height], " \t");
+	map_lines = map->file_lines - map->height;
+	trimed = ft_strtrim(map->map[map_lines], " \t");
 	if (ft_strlen(trimed) < 3)
 	{
 		printf("Error: Last line has only %i char.\n", (int)ft_strlen(trimed));

@@ -36,6 +36,7 @@ typedef struct s_map
 	t_player	*player;
 	int			player_count;
 	int			file_lines;
+	int			map_size;
 	char		**map;
 	void		*mlx;
 	void		*mlx_win;

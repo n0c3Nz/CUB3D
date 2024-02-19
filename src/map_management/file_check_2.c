@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 11:19:29 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/15 14:40:37 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:13:21 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void check_map_pos(t_map *map)
 	trimed = ft_strtrim(map->file[i], " \t");
 	while (trimed[0] != '1')
 		trimed = ft_strtrim(map->file[i++], " \t");
+	printf("Map starts at line: %i --> %s\n", i, trimed);
 	map_height(map, i);
 	i = map->height;
 	while (i < map->file_lines)
@@ -78,6 +79,7 @@ void check_map_pos(t_map *map)
 		if (trimed[0] != '1' && trimed[0] != '\0')
 		{
 			printf("Error: Map is not found in the last instance or is open\n");
+			printf("Line: %i  --> %s\n", i, trimed);
 			free_srcs(map);
 		}
 		trimed = ft_strtrim(map->file[i++], " \t");
@@ -123,7 +125,7 @@ void	element_finder(t_map *map)
 	int	i;
 
 	i = 0;
-	while ( i < map->file_lines - map->height - 1)
+	while ( i < map->height)
 	{
 		if ((ft_strnstr(map->file[i], "NO", 2) != 0))
 			is_valid_rute(map->file[i], map, "NO");
