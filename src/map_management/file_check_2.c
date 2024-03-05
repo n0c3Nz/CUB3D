@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 11:19:29 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/19 14:13:21 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/03/05 17:55:29 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void check_map_pos(t_map *map)
 		trimed = ft_strtrim(map->file[i++], " \t");
 	printf("Map starts at line: %i --> %s\n", i, trimed);
 	map_height(map, i);
-	i = map->height;
+	i = map->map_height;
 	while (i < map->file_lines)
 	{
 		if (trimed[0] != '1' && trimed[0] != '\0')
@@ -125,7 +125,7 @@ void	element_finder(t_map *map)
 	int	i;
 
 	i = 0;
-	while ( i < map->height)
+	while ( i < map->map_height)
 	{
 		if ((ft_strnstr(map->file[i], "NO", 2) != 0))
 			is_valid_rute(map->file[i], map, "NO");

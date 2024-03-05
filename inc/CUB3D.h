@@ -8,32 +8,51 @@
 # include <string.h>
 # include <math.h>
 # include "mlx/mlx.h"
+# include "key_macos.h"
 # include "Libft/libft.h"
-# include "./get_next_line/get_next_line.h"
+# include "get_next_line/get_next_line.h"
+
 # define BUFFER 1024
 # define DEBUG_TRACE_ENTER printf("Entrando a la función %s\n", __func__);
 # define DEBUG_TRACE_EXIT printf("Saliendo de la función %s\n", __func__);
 
+#define X_EVENT_KEY_PRESS		2
+# define X_EVENT_KEY_RELEASE	3
 
-typedef struct s_player
+# define width 640
+# define height 480
+
+# define mapWidth 24
+# define mapHeight 24
+
+typedef struct s_render
 {
-	int     x;
-	int     y;
-	char	dir;
-	int		turn_dir;
-	int		walk_dir;
-	int		walk_speed;
-	int		turn_speed;
-	int		fov;
-	int		fov_angle;
-	int		fov_start;
-	int		fov_end;
-}           t_player;
+	double 		planeX;
+	double 		planeY;
+	double		cameraX;
+	double		rayDirX;
+	double		rayDirY;
+	int			mapX;
+	int			mapY;
+	double		sideDistX;
+	double		sideDistY;
+	double		deltaDistX;
+	double		deltaDistY;
+	double		perpWallDist;
+	int			stepX;
+	int			stepY;
+	int			hit;
+	int			side;
+	int			lineHeight;
+	int			drawStart;
+	int			drawEnd;
+	int			verLinecolor;
 
+}		t_render;
 
 typedef struct s_map
 {
-	t_player	*player;
+	t_render	*render;
 	int			player_count;
 	int			file_lines;
 	int			map_size;
@@ -47,12 +66,27 @@ typedef struct s_map
 	char		*ea;
 	int			**c;
 	int			**f;
-	int			height;
+	double 		posX;
+	double 		posY;
+	char		dir;
+	double 		dirX;
+	double 		dirY;
+	int			map_height;
+	int			key_a;
+	int			key_w;
+	int			key_s;
+	int			key_d;
+	int			key_esc;
+	double		moveSpeed;
+	double		rotSpeed;
+	int			texWidth;
+	int			texHeight;
 }           t_map;
-
 /*			INIT_FUNCS.c		*/
 void	check_args(int argc, char **argv, t_map *map);
-void	initialize_map_and_player(t_map **map, t_player **player);
+void	initialize_map_and_render(t_map **map, t_render **render);//, t_player **player);
+void	ft_free_array(char **array, int size);
+void	ft_free_array_int(int **array, int size);
 void	free_srcs(t_map *map);
 /*			FILE_CHECK.c		*/
 void	map_height(t_map *map, int i);
@@ -75,6 +109,11 @@ void	check_first_line(t_map *map);
 void	check_body(t_map *map);
 void	check_last_line(t_map *map);
 /*			MLX_PROCESS.c		*/
-void	mlx_run(t_map *map);
+int		main_loop(t_map *map);
+void	calc(t_map *map);
+/*			KEY_HOOK.C			*/
+void	key_update(t_map *map);
+int		key_press(int key, t_map *info);
+int		key_release(int key, t_map *info);
 
 #endif

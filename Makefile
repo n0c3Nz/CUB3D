@@ -10,7 +10,8 @@ SRC = main.c \
 		./src/map_management/file_check_3.c \
 		./src/map_management/map_check.c \
 		./src/map_management/init_funcs.c \
-		./src/graphic_funcs/mlx_process.c
+		./src/graphic_funcs/mlx_process.c \
+		./src/key_funcs/key_hook.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:30:22 by guortun-          #+#    #+#             */
-/*   Updated: 2024/02/19 14:44:29 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/03/04 16:56:21 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,21 @@ void check_first_line(t_map *map)
 }
 static void get_fov(t_map *map)
 {
-	if (map->player->dir == 'N')
-		map->player->fov = 0;
-	else if (map->player->dir == 'S')
-		map->player->fov = 180;
-	else if (map->player->dir == 'E')
-		map->player->fov = 90;
-	else if (map->player->dir == 'W')
-		map->player->fov = 270;
-	map->player->fov_angle = map->player->fov * (M_PI / 180);
-	map->player->fov_start = map->player->dir - (map->player->fov_angle / 2);
-	map->player->fov_end = map->player->dir + (map->player->fov_angle / 2);
-	printf("Player FOV: %i\n", map->player->fov);
-	printf("Player FOV Angle: %i\n", map->player->fov_angle);
-	printf("Player FOV Start: %i\n", map->player->fov_start);
-	printf("Player FOV End: %i\n", map->player->fov_end);
+	if (map->dir == 'N')
+		map->dirX = -1.0;
+	else if (map->dir == 'S')
+		map->dirX = -1.0;
+	else if (map->dir == 'E')
+		map->dirX = -1.0;
+	else if (map->dir == 'W')
+		map->dirX = -1.0;
+	map->key_a = 0;
+	map->key_w = 0;
+	map->key_s = 0;
+	map->key_d = 0;
+	map->key_esc = 0;
+	map->moveSpeed = 0.04;
+	map->rotSpeed = 0.02;
 }
 
 static int is_player(t_map *map, char *direction, int y, int x)
@@ -59,11 +59,11 @@ static int is_player(t_map *map, char *direction, int y, int x)
 		ft_strchr(direction, 'E') || ft_strchr(direction, 'W'))
 	{
 		map->player_count = map->player_count + 1;
-		printf("Player found at %i, %i\n", y, x - 1);
-		map->player->dir = direction[0];
+		printf("Player found at %i, %i\n", y, x);
+		map->dir = direction[0];
 		get_fov(map);
-		map->player->x = x - 1;
-		map->player->y = y;
+		map->posX = x;
+		map->posY = y;
 		if (map->player_count > 1)
 			return (1);
 		return (0);
@@ -79,7 +79,7 @@ void check_body(t_map *map)
 	char *trimed;
 
 	i = 0;
-	while (i < map->file_lines - map->height)
+	while (i < map->file_lines - map->map_height)
 	{
 		trimed = ft_strtrim(map->map[i], " \t");
 		if (ft_strlen(trimed) < 3)
@@ -112,6 +112,11 @@ void check_body(t_map *map)
 		i++;
 	}
 	printf("Player count: %i\n", map->player_count);
+	if (map->player_count != 1)
+	{
+		printf("Error: Player count is not 1\n");
+		free_srcs(map);
+	}
 }
 
 void check_last_line(t_map *map)
@@ -121,7 +126,7 @@ void check_last_line(t_map *map)
 	int	map_lines;
 
 	i = 0;
-	map_lines = map->file_lines - map->height;
+	map_lines = map->file_lines - map->map_height;
 	trimed = ft_strtrim(map->map[map_lines], " \t");
 	if (ft_strlen(trimed) < 3)
 	{
