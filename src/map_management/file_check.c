@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 01:38:26 by guortun-          #+#    #+#             */
-/*   Updated: 2024/03/05 17:57:47 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/03/06 11:44:22 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void check_map(int fd, t_map *map)
 	char buffer[BUFFER + 1];
 	ssize_t bytes_read;
 
-	printf("DEBUGGING SEGFAULT\n");
 	while ((bytes_read = read(fd, buffer, BUFFER)) > 0)
 		buffer[bytes_read] = '\0';
 	map->player_count = 0;

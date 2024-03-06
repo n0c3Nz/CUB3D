@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 10:59:25 by guortun-          #+#    #+#             */
-/*   Updated: 2024/03/05 14:14:35 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/03/06 11:28:01 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	key_update(t_map *map)
 		double oldDirX = map->dirX;
 		map->dirX = map->dirX * cos(-map->rotSpeed) - map->dirY * sin(-map->rotSpeed);
 		map->dirY = oldDirX * sin(-map->rotSpeed) + map->dirY * cos(-map->rotSpeed);
-		double oldPlaneX = map->render.planeX;
-		map->render.planeX = map->render.planeX * cos(-map->rotSpeed) - map->render.planeY * sin(-map->rotSpeed);
-		map->render.planeY = oldPlaneX * sin(-map->rotSpeed) + map->render.planeY * cos(-map->rotSpeed);
+		double oldPlaneX = map->render->planeX;
+		map->render->planeX = map->render->planeX * cos(-map->rotSpeed) - map->render->planeY * sin(-map->rotSpeed);
+		map->render->planeY = oldPlaneX * sin(-map->rotSpeed) + map->render->planeY * cos(-map->rotSpeed);
 		printf("Has pulsado D -------- Player y[%f] x[%f]\n", map->posY, map->posX);
 	}
 	//rotate to the left
@@ -50,9 +50,9 @@ void	key_update(t_map *map)
 		double oldDirX = map->dirX;
 		map->dirX = map->dirX * cos(map->rotSpeed) - map->dirY * sin(map->rotSpeed);
 		map->dirY = oldDirX * sin(map->rotSpeed) + map->dirY * cos(map->rotSpeed);
-		double oldPlaneX = map->render.planeX;
-		map->render.planeX = map->render.planeX * cos(map->rotSpeed) - map->render.planeY * sin(map->rotSpeed);
-		map->render.planeY = oldPlaneX * sin(map->rotSpeed) + map->render.planeY * cos(map->rotSpeed);
+		double oldPlaneX = map->render->planeX;
+		map->render->planeX = map->render->planeX * cos(map->rotSpeed) - map->render->planeY * sin(map->rotSpeed);
+		map->render->planeY = oldPlaneX * sin(map->rotSpeed) + map->render->planeY * cos(map->rotSpeed);
 		printf("Has pulsado A -------- Player y[%f] x[%f]\n", map->posY, map->posX);
 	}
 	if (map->key_esc)
