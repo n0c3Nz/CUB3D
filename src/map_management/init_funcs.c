@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:46:18 by guortun-          #+#    #+#             */
-/*   Updated: 2024/03/05 17:56:46 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:55:21 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,18 @@ void check_args(int argc, char **argv, t_map *map)
 void initialize_map_and_render(t_map **map, t_render **render)//, t_player **player)
 {
 	*map = (t_map *)malloc(1 * sizeof(t_map));
+	if (!*map)
+	{
+		printf("Error\nMap memory allocation failed\n");
+		free_srcs(*map);
+	}
 	*render = (t_render *)malloc(1 * sizeof(t_render));
+	if (!*render)
+	{
+		printf("Error\nRender memory allocation failed\n");
+		free_srcs(*map);
+	}
+	//(*map)->render = (t_render *)malloc(1 * sizeof(t_render));
 	(*map)->render = *render;
 	(*map)->render->planeX = 0.0;
 	(*map)->render->planeY = 0.6;
@@ -80,8 +91,8 @@ void	free_srcs(t_map *map)
 		ft_free_array_int(map->c, 3);
 	if (map->f)
 		ft_free_array_int(map->f, 3);
-	/*if (map->render != NULL)
-		free(map->render);*/
+	if (map->render != NULL)
+		free(map->render);
 	if (map)
 		free(map);
 	if (map->mlx)

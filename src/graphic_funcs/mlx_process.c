@@ -6,17 +6,42 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 18:50:44 by guortun-          #+#    #+#             */
-/*   Updated: 2024/03/06 11:27:16 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:31:32 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "CUB3D.h"
 
+static void print_all_render(t_map *map)
+{
+	printf("--------------------\n");
+	printf("planeX: %f\n", map->render->planeX);
+	printf("planeY: %f\n", map->render->planeY);
+	printf("cameraX: %f\n", map->render->cameraX);
+	printf("rayDirX: %f\n", map->render->rayDirX);
+	printf("rayDirY: %f\n", map->render->rayDirY);
+	printf("mapX: %d\n", map->render->mapX);
+	printf("mapY: %d\n", map->render->mapY);
+	printf("sideDistX: %f\n", map->render->sideDistX);
+	printf("sideDistY: %f\n", map->render->sideDistY);
+	printf("deltaDistX: %f\n", map->render->deltaDistX);
+	printf("deltaDistY: %f\n", map->render->deltaDistY);
+	printf("perpWallDist: %f\n", map->render->perpWallDist);
+	printf("stepX: %d\n", map->render->stepX);
+	printf("stepY: %d\n", map->render->stepY);
+	printf("hit: %d\n", map->render->hit);
+	printf("side: %d\n", map->render->side);
+	printf("lineHeight: %d\n", map->render->lineHeight);
+	printf("drawStart: %d\n", map->render->drawStart);
+	printf("drawEnd: %d\n", map->render->drawEnd);
+	printf("verLinecolor: %d\n", map->render->verLinecolor);
+}
 static void	verLine(t_map *map, int x, int y1, int y2)
 {
 	int	y;
 
 	y = y1;
+	print_all_render(map);
 	while (y <= y2)
 	{
 		mlx_pixel_put(map->mlx, map->mlx_win, x, y, map->render->verLinecolor);
@@ -134,7 +159,7 @@ void	calc(t_map *map)
 int	main_loop(t_map *map)
 {
 	//test_player_vision(map);
-	calc(map);
 	key_update(map);
+	calc(map);
 	return (0);
 }

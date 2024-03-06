@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 01:38:26 by guortun-          #+#    #+#             */
-/*   Updated: 2024/03/06 11:44:22 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:56:38 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,20 @@ int		**ft_split_int(char *s, char c)
         i++;
     }
     ints = (int **)malloc(sizeof(int *) * count);
+	if (!ints)
+	{
+		printf("Error\nMemory allocation failed\n");
+		exit(1);
+	}
     i = 0;
     while (i < count)
     {
         ints[i] = (int *)malloc(sizeof(int));
+		if (!ints[i])
+		{
+			printf("Error\nMemory allocation failed\n");
+			exit(1);
+		}
         *ints[i] = ft_atoi(strs[i]);
         i++;
     }

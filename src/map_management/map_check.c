@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:30:22 by guortun-          #+#    #+#             */
-/*   Updated: 2024/03/04 16:56:21 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/03/06 12:44:33 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int is_player(t_map *map, char *direction, int y, int x)
 		map->dir = direction[0];
 		get_fov(map);
 		map->posX = x;
-		map->posY = y;
+		map->posY = y+1;
 		if (map->player_count > 1)
 			return (1);
 		return (0);
