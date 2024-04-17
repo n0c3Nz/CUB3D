@@ -7,7 +7,8 @@
 # include <fcntl.h>
 # include <string.h>
 # include <math.h>
-# include "mlx/mlx.h"
+# include <sys/time.h>
+# include <mlx/mlx.h>
 # include "key_macos.h"
 # include "Libft/libft.h"
 # include "get_next_line/get_next_line.h"
@@ -16,12 +17,11 @@
 # define DEBUG_TRACE_ENTER printf("Entrando a la función %s\n", __func__);
 # define DEBUG_TRACE_EXIT printf("Saliendo de la función %s\n", __func__);
 
-#define X_EVENT_KEY_PRESS		2
+# define X_EVENT_KEY_PRESS		2
 # define X_EVENT_KEY_RELEASE	3
 
 # define width 640
 # define height 480
-
 # define mapWidth 24
 # define mapHeight 24
 
@@ -43,77 +43,121 @@ typedef struct s_render
 	int			stepY;
 	int			hit;
 	int			side;
+	int			wallX;
 	int			lineHeight;
 	int			drawStart;
 	int			drawEnd;
+	long long	time;
+	long long	oldtime;
+	int			frametime;
 	int			verLinecolor;
+}				t_render;
 
-}		t_render;
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}				t_img;
+
+typedef struct s_cam
+{
+	double	camera_angle_x;
+	double	camera_angle_y;
+	double	sensitivity;
+}				t_cam;
+
+typedef struct s_player
+{
+	double	posX;
+	double	posY;
+	double	moveSpeed;
+	double	rotSpeed;
+	char	dir;
+	double 	dirX;
+	double 	dirY;
+}				t_player;
 
 typedef struct s_map
 {
-	t_render	*render;
-	int			player_count;
-	int			file_lines;
-	int			map_size;
-	char		**map;
+	int		map_size;
+	char	**lines;
+	char	*no;
+	char	*so;
+	char	*we;
+	char	*ea;
+	int		c;
+	int		f;
+}				t_map;
+
+typedef struct s_key
+{
+	int	key_a;
+	int key_w;
+	int key_s;
+	int key_d;
+	int key_ar_l;
+	int key_ar_r;
+	int key_esc;
+}			t_key;
+
+typedef struct s_cub
+{
 	void		*mlx;
 	void		*mlx_win;
-	char		**file;
-	char		*no;
-	char		*so;
-	char		*we;
-	char		*ea;
-	int			**c;
-	int			**f;
-	double 		posX;
-	double 		posY;
-	char		dir;
-	double 		dirX;
-	double 		dirY;
-	int			map_height;
-	int			key_a;
-	int			key_w;
-	int			key_s;
-	int			key_d;
-	int			key_esc;
-	double		moveSpeed;
-	double		rotSpeed;
-	int			texWidth;
-	int			texHeight;
-}           t_map;
-/*			INIT_FUNCS.c		*/
-void	check_args(int argc, char **argv, t_map *map);
-void	initialize_map_and_render(t_map **map, t_render **render);//, t_player **player);
-void	ft_free_array(char **array, int size);
-void	ft_free_array_int(int **array, int size);
-void	free_srcs(t_map *map);
-/*			FILE_CHECK.c		*/
-void	map_height(t_map *map, int i);
-int		count_lines(char **file);
-void	check_items(t_map *map);
-void	check_map(int fd, t_map *map);
-int		**ft_split_int(char *s, char c);
-/*			FILE_CHECK_2.c		*/
-void	process_map(int fd, t_map *map, char **argv);
-int		go_to_map(int fd);
-void	check_map_pos(t_map *map);
-void	element_finder(t_map *map);
-/*			FILE_CHECK_3.c		*/
-void	dump_map(t_map *map);
-void	rute_filler(t_map *map, char *rute, char *valid_rute);
-void	is_valid_rgb(char *str, t_map *map, char id);
-void	rgb_is_digit(char **strs);
-/*			MAP_CHECK.c			*/
-void	check_first_line(t_map *map);
-void	check_body(t_map *map);
-void	check_last_line(t_map *map);
-/*			MLX_PROCESS.c		*/
-int		main_loop(t_map *map);
-void	calc(t_map *map);
-/*			KEY_HOOK.C			*/
-void	key_update(t_map *map);
-int		key_press(int key, t_map *info);
-int		key_release(int key, t_map *info);
+	t_render	*render;
+	t_img		*img;
+	t_cam		cam;
+	t_player	player;
+	t_map		map;
+	t_key		key;
+}           t_cub;
 
+/*			INIT_FUNCS.c		*/
+void	check_args(int argc, char **argv, t_cub *cub);
+void	initialize_map_and_render(t_cub **cub, t_render **render);//, t_player **player);
+void	free_srcs(t_cub *cub);
+/*			FILE_CHECK.c		*/
+void	check_file(int fd, t_cub *cub);
+void	trim_and_fill(t_cub *cub, char *buffer, int *map_length, int *player_count);
+void	analyse_file(t_cub *cub, char *line, int *player_count, int *map_length);
+/*			FILE_UTILS.c		*/
+void	error_msg(char *msg, t_cub *cub);
+void	check_limit(char *line);
+void	check_route(char *route);
+int		rgb_to_hex(t_cub *cub, char *rgb);
+/*			FILL_MAP_UTILS.c		*/
+int		find_long_line(char *buffer);
+char	**allocate_memory(t_cub *cub, int lines);
+int		checkBufferAndFillLines(char buffer_k, char *lines_ij, int *j);
+/*			FILL_MAP.c		*/
+void	fill_map(t_cub *cub, char *buffer);
+
+/*			FILE_CHECK_2.c		*/
+void	process_map(int fd, t_cub *cub, char **argv);
+/*			MLX_PROCESS.c		*/
+void	my_mlx_pixel_putcolor(t_img *img, int x, int y, int color);
+int		main_loop(t_cub *cub);
+void	calc(t_cub *cub);
+/*			KEY_HOOK.C			*/
+void	key_update(t_cub *cub);
+int		key_press(int key, t_cub *info);
+int		key_release(int key, t_cub *info);
+/*			MINIMAP NAVIGATION */
+// int		draw_minimap(t_cub *cub);
+/*			RAYCASTING DDA */
+void	create_plans(t_cub *cub, int x);
+void	raydir(t_cub *cub, int x);
+void	raydir2(t_cub *cub, int x);
+void	ray2wall(t_cub *cub);
+void	which_side_ray_collide(t_cub *cub);
+void	getraycoords(t_cub *cub);
+/*			FLOOR */
+void	drawfloor_ceiling(t_cub *cub, int x);
+int		mouse_handler(int x, int y, t_cub *cub);
+long	long	timenow(struct timeval *te);
+void	blscr_img(t_cub *cub);
+int		adios(t_cub *cub);
 #endif

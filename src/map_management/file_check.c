@@ -6,99 +6,142 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 01:38:26 by guortun-          #+#    #+#             */
-/*   Updated: 2024/03/06 12:56:38 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:06:59 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "CUB3D.h"
 
-void	map_height(t_map *map, int i)
-{
-	map->map_height = i;
-	map->map_size = map->file_lines - i;
-	if (map->map_height < 3)
-	{
-		printf("Error 5: Invalid size map\n");
-		exit(1);
-	}
-}
-
-int count_lines(char **file)
-{
-	int count;
-
-	count = 0;
-	while (file[count] != NULL)
-		count++;
-	return count;
-}
-
-void check_items(t_map *map)
+static void	get_map(t_cub *cub, char *line, int *player_count, int *map_length)
 {
 	int	i;
 
-	i = 0;	
-	while (i < map->file_lines - map->map_height)
+	i = 0;
+	if (*map_length == 0)
 	{
-		if (map->file[i][0] != 'N')
-			i++;
-
+		check_limit(line);
+		(*map_length)++;
+		return ;
 	}
-}
-
-void check_map(int fd, t_map *map)
-{
-	char buffer[BUFFER + 1];
-	ssize_t bytes_read;
-
-	while ((bytes_read = read(fd, buffer, BUFFER)) > 0)
-		buffer[bytes_read] = '\0';
-	map->player_count = 0;
-	map->file = ft_split(buffer, '\n');
-	map->file_lines = count_lines(map->file);
-	check_map_pos(map);
-	element_finder(map);
-	printf("\nC RGB: %i %i %i\nF RGB: %i %i %i\n", map->c[0][0], map->c[1][0], map->c[2][0], map->f[0][0], map->f[1][0], map->f[2][0]);
-	dump_map(map);
-	check_first_line(map);
-	check_body(map);
-	check_last_line(map);
-	printf("\nNumber of lines: %i\nMap height: %i\n", map->file_lines, map->map_height);
-}
-
-int		**ft_split_int(char *s, char c)
-{
-    char	**strs;
-    int		**ints;
-    int		i;
-    int		count;
-
-    strs = ft_split(s, c);
-    i = 0;
-	rgb_is_digit(strs);
-    count = 0;
-    while (strs[i])
-    {
-        count++;
-        i++;
-    }
-    ints = (int **)malloc(sizeof(int *) * count);
-	if (!ints)
+	while (line[i] == '0')
+		i++;
+	if (ft_strlen(line) < 3)
+		error_msg("Line of map is too short", cub);
+	if ((line[i] != '1' && line[i] != ' ') || (line[ft_strlen(line) - 1] != '1'
+			&& line[ft_strlen(line) - 1] != ' '))
+		error_msg("Map is not closed", cub);
+	while (line[i] != '\0')
 	{
-		printf("Error\nMemory allocation failed\n");
-		exit(1);
-	}
-    i = 0;
-    while (i < count)
-    {
-        ints[i] = (int *)malloc(sizeof(int));
-		if (!ints[i])
+		if (line[i] == '1' || line[i] == ' ' || line[i] == '0' || line[i] == 'N'
+			|| line[i] == 'S' || line[i] == 'W' || line[i] == 'E')
 		{
-			printf("Error\nMemory allocation failed\n");
-			exit(1);
+			if (line[i] == 'N' || line[i] == 'S' || line[i] == 'W'
+				|| line[i] == 'E')
+			{
+				(*player_count)++;
+				cub->player.posX = i;
+				cub->player.posY = *map_length;
+				cub->player.dir = line[i];
+			}
+			i++;
 		}
-        *ints[i] = ft_atoi(strs[i]);
-        i++;
-    }
-    return (ints);
+		else
+			error_msg("Invalid character on map", cub);
+	}
+	(*map_length)++;
+}
+
+static void	get_texture(t_cub *cub, char *line)
+{
+	if (*line == 'N' && *(line + 1) == 'O')
+	{
+		cub->map.no = ft_strdup(line + 3);
+		check_route(cub->map.no);
+	}
+	else if (*line == 'S' && *(line + 1) == 'O')
+	{
+		cub->map.so = ft_strdup(line + 3);
+		check_route(cub->map.so);
+	}
+	else if (*line == 'W' && *(line + 1) == 'E')
+	{
+		cub->map.we = ft_strdup(line + 3);
+		check_route(cub->map.we);
+	}
+	else if (*line == 'E' && *(line + 1) == 'A')
+	{
+		cub->map.ea = ft_strdup(line + 3);
+		check_route(cub->map.ea);
+	}
+}
+
+static void	get_color(t_cub *cub, char *line)
+{
+	char	*tmp;
+
+	if (*line == 'F' && *(line + 1) == ' ')
+	{
+		tmp = ft_strdup(line + 2);
+		cub->map.f = rgb_to_hex(cub, tmp);
+	}
+	else if (*line == 'C' && *(line + 1) == ' ')
+	{
+		tmp = ft_strdup(line + 2);
+		cub->map.c = rgb_to_hex(cub, tmp);
+	}
+	else
+		error_msg("Invalid Ceiling or Floor color", cub);
+}
+
+void	analyse_file(t_cub *cub, char *line, int *player_count, int *map_length)
+{
+	if ((*map_length > 0) && (*line != '1' && *line != ' '))
+		error_msg("Bad character in or after map", cub);
+	if (*line == 'N' && *(line + 1) == 'O')
+		get_texture(cub, line);
+	else if (*line == 'S' && *(line + 1) == 'O')
+		get_texture(cub, line);
+	else if (*line == 'W' && *(line + 1) == 'E')
+		get_texture(cub, line);
+	else if (*line == 'E' && *(line + 1) == 'A')
+		get_texture(cub, line);
+	else if (*line == 'F')
+		get_color(cub, line);
+	else if (*line == 'C')
+		get_color(cub, line);
+	else if (*line == '1' || *line == ' ')
+		get_map(cub, line, player_count, map_length);
+	else if (*line == '\0')
+		return ;
+	else
+		error_msg("Invalid character on file", cub);
+}
+
+void	check_file(int fd, t_cub *cub)
+{
+	ssize_t	bytes_read;
+	char	buffer[BUFFER];
+	int		map_length;
+	int		player_count;
+
+	map_length = 0;
+	player_count = 0;
+	bytes_read = read(fd, buffer, BUFFER);
+	while (bytes_read > 0)
+	{
+		buffer[bytes_read] = '\0';
+		bytes_read = read(fd, buffer, BUFFER);
+	}
+	trim_and_fill(cub, buffer, &map_length, &player_count);
+	if (player_count == 0 || player_count > 1)
+		error_msg("Invalid player count", cub);
+	if (map_length < 2)
+		error_msg("Map is too short", cub);
+	cub->map.map_size = map_length;
+	if (cub->map.no == NULL || cub->map.so == NULL
+		|| cub->map.we == NULL || cub->map.ea == NULL)
+		error_msg("Missing texture", cub);
+	if (cub->map.f == 0 || cub->map.c == 0)
+		error_msg("Missing color", cub);
+	fill_map(cub, buffer);
 }

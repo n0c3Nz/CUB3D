@@ -1,0 +1,56 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mouse_handler.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/29 15:31:30 by smagniny          #+#    #+#             */
+/*   Updated: 2024/04/01 16:43:27 by guortun-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "CUB3D.h"
+
+// int	mouse_handler(int x, int y, t_cub *cub)
+// {
+// 	static	int prev_x=0;
+//     static	int prev_y=0;
+// 	int		dx;
+// 	int		dy;
+
+//     dx = x - prev_x;
+//     dy = y - prev_y;
+// 	if (prev_x == 0)
+// 		dx -= abs(dx - 1);
+// 	if (prev_y == 0)
+// 		dy -= abs(dy - 1);
+// 	prev_x = x;
+// 	prev_y = y;
+//     // cub->cam.camera_angle_x += dx * cub->cam.sensitivity;
+//     // cub->cam.camera_angle_y += dy * cub->cam.sensitivity;
+
+//     // if (cub->cam.camera_angle_y > M_PI / 2)
+//     //     cub->cam.camera_angle_y = M_PI / 2;
+//     // else if (cub->cam.camera_angle_y < -M_PI / 2)
+//     //     cub->cam.camera_angle_y = -M_PI / 2;
+// 	printf("X=%d   Y=%d\n", x, y);
+//     printf("Camera variation: dX=%d, dY=%d    dx = (%d - %d)\n", dx, dy, x, prev_x);
+// 	double oldDirX = cub->dirX;
+// 	double oldPlaneX = cub->render->planeX;
+// 	if (dx)
+// 	{
+// 		cub->dirX = cub->dirX * cos(-dx) - cub->dirY * sin(-dx);
+// 		cub->dirY = oldDirX * sin(-dy) + cub->dirY * cos(-dy);
+// 		cub->render->planeX = cub->render->planeX * cos(-dx) - cub->render->planeY * sin(-dx);
+// 		cub->render->planeY = oldPlaneX * sin(-dy) + cub->render->planeY * cos(-dy);
+// 	}
+// 	if (!dx)
+// 	{
+// 		cub->dirX = cub->dirX * cos(dx) - cub->dirY * sin(dx);
+// 		cub->dirY = oldDirX * sin(dy) + cub->dirY * cos(dy);
+// 		cub->render->planeX = cub->render->planeX * cos(dx) - cub->render->planeY * sin(dx);
+// 		cub->render->planeY = oldPlaneX * sin(dy) + cub->render->planeY * cos(dy);
+// 	}
+// 	return (0);
+// }

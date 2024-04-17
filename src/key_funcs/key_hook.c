@@ -6,86 +6,99 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 10:59:25 by guortun-          #+#    #+#             */
-/*   Updated: 2024/03/06 11:28:01 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/04/08 12:30:17 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "CUB3D.h"
 
-void	key_update(t_map *map)
+void	key_update(t_cub *cub)
 {
-	if (map->key_w)//arriba y abajo tocan map->map que está dando conflicto.
+	if (cub->key.key_w)
 	{
-		if (!map->map[(int)(map->posX + map->dirX * map->moveSpeed)][(int)(map->posY)])
-			map->posX += map->dirX * map->moveSpeed;
-		if (!map->map[(int)(map->posX)][(int)(map->posY + map->dirY * map->moveSpeed)])
-			map->posY += map->dirY * map->moveSpeed;
-		printf("Has pulsado W -------- Player y[%f] x[%f]\n", map->posY, map->posX);
+		if (cub->map.lines[(int)(cub->player.posY)][(int)(cub->player.posX + cub->player.dirX * cub->player.moveSpeed)] == '0')
+			cub->player.posX += cub->player.dirX * cub->player.moveSpeed;
+
+		if (cub->map.lines[(int)(cub->player.posY + cub->player.dirY * cub->player.moveSpeed)][(int)(cub->player.posX)] == '0')
+			cub->player.posY += cub->player.dirY * cub->player.moveSpeed;
+		//printf("Has pulsado W -------- Player y[%f] x[%f]\n", cub->player.posY, cub->player.posX);
 	}
-	//move backwards if no wall behind you
-	if (map->key_s)
+	if (cub->key.key_s)
 	{
-		if (!map->map[(int)(map->posX - map->dirX * map->moveSpeed)][(int)(map->posY)])
-			map->posX -= map->dirX * map->moveSpeed;
-		if (!map->map[(int)(map->posX)][(int)(map->posY - map->dirY * map->moveSpeed)])
-			map->posY -= map->dirY * map->moveSpeed;
-		printf("Has pulsado S -------- Player y[%f] x[%f]\n", map->posY, map->posX);
+		if (cub->map.lines[(int)(cub->player.posY)][(int)(cub->player.posX - cub->player.dirX * cub->player.moveSpeed)] == '0')
+			cub->player.posX -= cub->player.dirX * cub->player.moveSpeed;
+		if (cub->map.lines[(int)(cub->player.posY - cub->player.dirY * cub->player.moveSpeed)][(int)(cub->player.posX)] == '0')
+			cub->player.posY -= cub->player.dirY * cub->player.moveSpeed;
+		//printf("Has pulsado S -------- Player y[%f] x[%f]\n", cub->player.posY, cub->player.posX);
 	}
-	//rotate to the right
-	if (map->key_d)
+	if (cub->key.key_a)
 	{
 		//both camera direction and camera plane must be rotated
-		double oldDirX = map->dirX;
-		map->dirX = map->dirX * cos(-map->rotSpeed) - map->dirY * sin(-map->rotSpeed);
-		map->dirY = oldDirX * sin(-map->rotSpeed) + map->dirY * cos(-map->rotSpeed);
-		double oldPlaneX = map->render->planeX;
-		map->render->planeX = map->render->planeX * cos(-map->rotSpeed) - map->render->planeY * sin(-map->rotSpeed);
-		map->render->planeY = oldPlaneX * sin(-map->rotSpeed) + map->render->planeY * cos(-map->rotSpeed);
-		printf("Has pulsado D -------- Player y[%f] x[%f]\n", map->posY, map->posX);
+		double oldDirX = cub->player.dirX;
+		cub->player.dirX = cub->player.dirX * cos(-cub->player.rotSpeed) - cub->player.dirY * sin(-cub->player.rotSpeed);
+		cub->player.dirY = oldDirX * sin(-cub->player.rotSpeed) + cub->player.dirY * cos(-cub->player.rotSpeed);
+		double oldPlaneX = cub->render->planeX;
+		cub->render->planeX = cub->render->planeX * cos(-cub->player.rotSpeed) - cub->render->planeY * sin(-cub->player.rotSpeed);
+		cub->render->planeY = oldPlaneX * sin(-cub->player.rotSpeed) + cub->render->planeY * cos(-cub->player.rotSpeed);
+		//printf("Has pulsado D -------- Player y[%f] x[%f]\n", cub->player.posY, cub->player.posX);
 	}
 	//rotate to the left
-	if (map->key_a)
+	if (cub->key.key_d)
 	{
 		//both camera direction and camera plane must be rotated
-		double oldDirX = map->dirX;
-		map->dirX = map->dirX * cos(map->rotSpeed) - map->dirY * sin(map->rotSpeed);
-		map->dirY = oldDirX * sin(map->rotSpeed) + map->dirY * cos(map->rotSpeed);
-		double oldPlaneX = map->render->planeX;
-		map->render->planeX = map->render->planeX * cos(map->rotSpeed) - map->render->planeY * sin(map->rotSpeed);
-		map->render->planeY = oldPlaneX * sin(map->rotSpeed) + map->render->planeY * cos(map->rotSpeed);
-		printf("Has pulsado A -------- Player y[%f] x[%f]\n", map->posY, map->posX);
+		double oldDirX = cub->player.dirX;
+		cub->player.dirX = cub->player.dirX * cos(cub->player.rotSpeed) - cub->player.dirY * sin(cub->player.rotSpeed);
+		cub->player.dirY = oldDirX * sin(cub->player.rotSpeed) + cub->player.dirY * cos(cub->player.rotSpeed);
+		double oldPlaneX = cub->render->planeX;
+		cub->render->planeX = cub->render->planeX * cos(cub->player.rotSpeed) - cub->render->planeY * sin(cub->player.rotSpeed);
+		cub->render->planeY = oldPlaneX * sin(cub->player.rotSpeed) + cub->render->planeY * cos(cub->player.rotSpeed);
+		//printf("Has pulsado A -------- Player y[%f] x[%f]\n", cub->player.posY, cub->player.posX);
 	}
-	if (map->key_esc)
+	if (cub->key.key_esc)
+	{
+		printf("Hola\n");
 		exit(0);
+	}
 }
-int		key_press(int key, t_map *map)
+
+int		key_press(int key, t_cub *cub)
 {
 	if (key == K_ESC)
 		exit(0);
 	else if (key == K_W)
-		map->key_w = 1;
-	else if (key == K_A)
-		map->key_a = 1;
+		cub->key.key_w = 1;
+	else if (key == K_A || key == K_AR_L)
+		cub->key.key_a = 1;
 	else if (key == K_S)
-		map->key_s = 1;
-	else if (key == K_D)
-		map->key_d = 1;
+		cub->key.key_s = 1;
+	else if (key == K_D || key == K_AR_R)
+		cub->key.key_d = 1;
 	else
 		printf("Invalid key %i\n", key);
 	return (0);
 }
 
-int		key_release(int key, t_map *map)
+int		key_release(int key, t_cub *cub)
 {
 	if (key == K_ESC)
 		exit(0);
 	else if (key == K_W)
-		map->key_w = 0;
-	else if (key == K_A)
-		map->key_a = 0;
+		cub->key.key_w = 0;
+	else if (key == K_A || key == K_AR_L)
+		cub->key.key_a = 0;
 	else if (key == K_S)
-		map->key_s = 0;
-	else if (key == K_D)
-		map->key_d = 0;
+		cub->key.key_s = 0;
+	else if (key == K_D || key == K_AR_R)
+		cub->key.key_d = 0;
+	else
+		printf("Invalid key %i\n", key);
+	return (0);
+}
+
+
+int	adios(t_cub *cub)
+{
+	mlx_destroy_window(cub->mlx, cub->mlx_win);
+	free_srcs(cub);
 	return (0);
 }

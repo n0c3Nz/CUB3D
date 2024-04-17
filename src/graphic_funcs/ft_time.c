@@ -1,13 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_check.c                                        :+:      :+:    :+:   */
+/*   ft_time.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: smagniny <santi.mag777@student.42madrid    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/09 16:30:22 by guortun-          #+#    #+#             */
-/*   Updated: 2024/04/05 18:18:45 by guortun-         ###   ########.fr       */
+/*   Created: 2024/03/13 11:35:49 by smagniny          #+#    #+#             */
+/*   Updated: 2024/03/13 12:09:53 by smagniny         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "CUB3D.h"
+
+long	long	timenow(struct timeval *te)
+{
+	long long	time;
+
+	gettimeofday(te, NULL);
+	time = (long long)((te->tv_sec * 1000) + (te->tv_usec / 1000));
+	return (time);
+}

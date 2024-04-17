@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: guortun- <guortun-@student.42.fr>          +#+  +:+       +#+         #
+#    By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/05 19:26:50 by guortun-          #+#    #+#              #
-#    Updated: 2023/03/29 17:43:52 by guortun-         ###   ########.fr        #
+#    Updated: 2024/03/06 12:10:43 by smagniny         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ BONUS-SRCS = get_next_line_bonus.c \
 
 OBJS	= $(SRCS:%.c=%.o)
 BOBJS	= $(BONUS-SRCS:%.c=%.o)
-NAME	= get_next_line.a
+NAME	= libget_next_line.a
 NAME_B	= .bonus
 
 
