@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   render_floor_ceiling.c                             :+:      :+:    :+:   */
+/*   rnd_floor_ceiling.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
+/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 15:07:02 by smagniny          #+#    #+#             */
-/*   Updated: 2024/04/02 14:09:28 by smagniny         ###   ########.fr       */
+/*   Updated: 2024/04/29 20:23:42 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,18 @@
 
 void	drawfloor_ceiling(t_cub *cub, int x)
 {
-	if (cub->render->drawEnd < 0)
-		cub->render->drawEnd = height;
+	int	y;
 
-	//draw the floor from drawEnd to the bottom of the screen and inverse. for ceiling
-	for (int y = cub->render->drawEnd + 1; y < height; y++)
+	y = cub->rnd->drawEnd + 1;
+	if (cub->rnd->drawEnd < 0)
+		cub->rnd->drawEnd = height;
+	while (y < height)
 	{
-		my_mlx_pixel_putcolor(cub->img, x, y, 0x4d0011);
-		my_mlx_pixel_putcolor(cub->img, x, (height - y), 0x4d0011);
+		if (y * width + x < width * height && (y > 0 && x > 0))
+		{
+			cub->img.addr[y * width + x] = cub->map.c;
+			cub->img.addr[(height - y) * width + x] = cub->map.f;
+		}
+		y++;
 	}
 }

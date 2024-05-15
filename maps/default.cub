@@ -1,14 +1,12 @@
-NO ./Remind.xpm
-SO ./Remind.xpm
-WE ./Remind.xpm
-EA ./Remind.xpm
+NO ./sprites/42.xpm
+SO sprites/sur-good.xpm
+WE sprites/window.xpm
+EA sprites/este.xpm
 
-F 77,0,17
-C 225,251,0
+F 1,1,25
+C 150,150,1
 
-    111
-    1N1
-    101111
-    1001111111
-    1000000000000011
-    111
+11111
+10001
+10S01
+01111

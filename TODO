@@ -2,3 +2,14 @@ Cosas a tener en cuenta:
 
 map->file
 	· No guarda las líneas que solo contienen un salto de línea.
+
+
+Cosas que se podrian hacer:
+	- minimapa
+	- mouse mouvement on camera x,y
+	- enemigos
+	- arma / disparo
+	- vida
+	- sonido
+	- interaciones (recargar / recoger)
+

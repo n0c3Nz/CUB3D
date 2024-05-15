@@ -6,7 +6,7 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/10 13:43:03 by guortun-          #+#    #+#             */
-/*   Updated: 2024/04/10 14:15:18 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:46:17 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@ static void	initializeindices(int *i, int *j, int *k)
 	*k = 0;
 }
 
-static void	allocatememoryforline(char **lines_i, int line_length, t_cub *cub)
-{
-	*lines_i = malloc(sizeof(char) * line_length + 1);
-	if (!*lines_i)
-		error_msg("Error: malloc()\n", cub);
-}
-
 static void	fill_linewithones(char *lines_i, int line_length)
 {
 	int	j;
@@ -36,39 +29,37 @@ static void	fill_linewithones(char *lines_i, int line_length)
 	lines_i[j] = '\0';
 }
 
-void	fill_mold(t_cub *cub, char **lines, char *buffer, int line_length)
+static	int	fill_mold(t_cub *cub, char *buffer)
 {
 	int	i;
 	int	j;
 	int	k;
 
 	initializeindices(&i, &j, &k);
-	allocatememoryforline(&lines[i], line_length, cub);
+	cub->map.lines[i] = malloc(sizeof(char *) * cub->map.sx + 1);
+	if (cub->map.lines[i] == NULL)
+		return (ft_putstr_err("Error: malloc: Unable to allocate for map*\n"));
 	while (buffer[k])
 	{
-		if (!checkBufferAndFillLines(buffer[k], &lines[i][j], &j))
+		if (!check_bff_and_fill_lines(buffer[k], &cub->map.lines[i][j], &j))
 		{
-			while (j < line_length)
-				lines[i][j++] = '1';
-			lines[i][j] = '\0';
+			while (j < cub->map.sx)
+				cub->map.lines[i][j++] = '1';
+			cub->map.lines[i][j] = '\0';
 			if (buffer[k + 1])
 			{
-				i++;
-				lines[i] = malloc(sizeof(char) * line_length + 1);
-				if (!lines[i])
-					error_msg("Error: malloc()\n", cub);
+				check_alloc(cub, &i);
 				j = 0;
 			}
 		}
 		k++;
 	}
-	fill_linewithones(lines[i], line_length);
+	fill_linewithones(cub->map.lines[i], cub->map.sx);
+	return (0);
 }
 
-void	fill_map(t_cub *cub, char *buffer)
+int	fill_map(t_cub **cub, char *buffer)
 {
-	int	line_length;
-
 	while (*buffer != '\0')
 	{
 		if (*buffer != '\n' && (*(buffer + 1) != '\0'))
@@ -80,9 +71,11 @@ void	fill_map(t_cub *cub, char *buffer)
 				break ;
 		}
 	}
-	line_length = find_long_line(buffer);
-	cub->map.lines = allocate_memory(cub, cub->map.map_size);
-	if (!cub->map.lines)
-		error_msg("Error: malloc()\n", cub);
-	fill_mold(cub, cub->map.lines, buffer, line_length);
+	(*cub)->map.sx = find_long_line(buffer);
+	(*cub)->map.lines = allocate_memory((*cub)->map.sy);
+	if ((*cub)->map.lines == NULL)
+		return (ft_putstr_err("Error: malloc: Unable to allocate for map*\n"));
+	if (fill_mold(*cub, buffer))
+		return (1);
+	return (0);
 }

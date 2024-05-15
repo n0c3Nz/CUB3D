@@ -6,33 +6,36 @@
 /*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 19:16:28 by guortun-          #+#    #+#             */
-/*   Updated: 2024/04/08 19:17:56 by guortun-         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:46:10 by guortun-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "CUB3D.h"
 
-void	error_msg(char *msg, t_cub *cub)
+int	check_map_data(t_cub **cub, char *buffer)
 {
-	printf("Error: %s\n", msg);
-	free_srcs(cub);
-	exit(1);
+	if ((*cub)->map.no == NULL || (*cub)->map.so == NULL
+		|| (*cub)->map.we == NULL || (*cub)->map.ea == NULL)
+		return (ft_putstr_err("Error: Missing texture\n"));
+	if ((*cub)->map.f == 0 || (*cub)->map.c == 0)
+		return (ft_putstr_err("Error: Missing color\n"));
+	if (fill_map(cub, buffer))
+		return (1);
+	return (0);
 }
 
-void	check_limit(char *line)
+int	check_limit(char *line)
 {
 	int	i;
 
 	i = 0;
 	while (line[i] != '\0')
 	{
-		if (line[i] != '1' && line[i] != ' ')
-		{
-			printf("Error: Map is not closed -> %s\n", line);
-			exit(1);
-		}
+		if (line[i] != '1' && line[i] != ' ' && line[i] != '\n')
+			return (ft_putstr_err("Error: Map is not closed\n"));
 		i++;
 	}
+	return (0);
 }
 
 void	check_route(char *route)
@@ -40,25 +43,15 @@ void	check_route(char *route)
 	int	fd;
 
 	if (*route == '\0')
-	{
-		printf("Error: Missing texture route\n");
-		exit(1);
-	}
+		error_msg("Error: Invalid texture route");
 	if (ft_strncmp(route + ft_strlen(route) - 4, ".xpm", 4))
-	{
-		printf("Error\nInvalid texture extension\n");
-		exit(1);
-	}
+		error_msg("Error: Invalid texture extension");
 	fd = open(route, O_RDONLY);
 	if (fd <= 0)
-	{
-		printf("Error: Invalid texture route\n");
-		exit(1);
-	}
+		error_msg("Error: Invalid texture route");
 	close(fd);
 }
 
-//Función que pasa de RGB a hexadecimal with 0x...
 int	rgb_to_hex(t_cub *cub, char *rgb)
 {
 	char	**rgb_split;
@@ -66,24 +59,46 @@ int	rgb_to_hex(t_cub *cub, char *rgb)
 	int		i;
 
 	i = 0;
+	if (ft_strlen(rgb) < 5)
+		exit (0);
 	while (rgb[i] != '\0')
 	{
 		if ((rgb[i] < 48 || rgb[i] > 57) && rgb[i] != ',')
-			error_msg("Invalid RGB format", cub);
+			error_msg("Error: Invalid RGB format");
 		i++;
 	}
 	i = 0;
 	rgb_split = ft_split(rgb, ',');
 	if (rgb_split == NULL || rgb_split[0] == NULL
 		|| rgb_split[1] == NULL || rgb_split[2] == NULL)
-		error_msg("Invalid RGB format", cub);
-	while (rgb_split[i] != NULL)
 	{
-		if (ft_atoi(rgb_split[i]) < 0 || ft_atoi(rgb_split[i]) > 255)
-			error_msg("Invalid RGB format", cub);
-		i++;
+		free(rgb_split[2]);
+		free(rgb_split[1]);
+		free(rgb_split[0]);
+		free(rgb_split);
+		return (0);
 	}
-	hex = ft_atoi(rgb_split[0]) * 65536 + ft_atoi(rgb_split[1])
-		* 256 + ft_atoi(rgb_split[2]);
-	return (hex);
+	return (process_rgb(rgb_split, rgb, cub));
+}
+
+int	process_line(int *map_length, char *line, int *i)
+{
+	if (ft_strlen(line) == 0)
+		return (0);
+	if (*map_length == 0)
+	{
+		if (check_limit(line))
+			return (1);
+		(*map_length)++;
+		return (0);
+	}
+	while (line[*i] == '0')
+		(*i)++;
+	if (ft_strlen(line) < 3)
+		return (ft_putstr_err("Error: Line of map is too short\n"));
+	if ((line[*i] != '1' && line[*i] != ' ')
+		|| (line[ft_strlen(line) - 1] != '1'
+			&& line[ft_strlen(line) - 1] != ' '))
+		return (ft_putstr_err("Error: Map is not closed\n"));
+	return (0);
 }
