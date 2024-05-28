@@ -1,40 +1,23 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fill_map.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/10 13:43:03 by guortun-          #+#    #+#             */
-/*   Updated: 2024/05/15 10:46:17 by guortun-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CUB3D.h"
-
 static void	initializeindices(int *i, int *j, int *k)
 {
 	*i = 0;
 	*j = 0;
 	*k = 0;
 }
-
 static void	fill_linewithones(char *lines_i, int line_length)
 {
 	int	j;
-
 	j = 0;
 	while (j < line_length)
 		lines_i[j++] = '1';
 	lines_i[j] = '\0';
 }
-
 static	int	fill_mold(t_cub *cub, char *buffer)
 {
 	int	i;
 	int	j;
 	int	k;
-
 	initializeindices(&i, &j, &k);
 	cub->map.lines[i] = malloc(sizeof(char *) * cub->map.sx + 1);
 	if (cub->map.lines[i] == NULL)
@@ -57,7 +40,6 @@ static	int	fill_mold(t_cub *cub, char *buffer)
 	fill_linewithones(cub->map.lines[i], cub->map.sx);
 	return (0);
 }
-
 int	fill_map(t_cub **cub, char *buffer)
 {
 	while (*buffer != '\0')

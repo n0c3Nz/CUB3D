@@ -10,7 +10,6 @@
 #define mapHeight 24
 #define width 640
 #define height 480
-
 typedef struct	s_info
 {
 	double posX;
@@ -24,7 +23,6 @@ typedef struct	s_info
 	double	moveSpeed;
 	double	rotSpeed;
 }				t_info;
-
 int	worldMap[24][24] = {
 							{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 							{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -51,11 +49,9 @@ int	worldMap[24][24] = {
 							{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 							{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 						};
-
 void	verLine(t_info *info, int x, int y1, int y2, int color)
 {
 	int	y;
-
 	y = y1;
 	while (y <= y2)
 	{
@@ -63,37 +59,29 @@ void	verLine(t_info *info, int x, int y1, int y2, int color)
 		y++;
 	}
 }
-
 void	calc(t_info *info)
 {
 	int	x;
-
 	x = 0;
 	while (x < width)
 	{
 		double cameraX = 2 * x / (double)width - 1;//coordenada x en el plano de la camara
 		double rayDirX = info->dirX + info->planeX * cameraX;//direccion x del rayo en el espacio
 		double rayDirY = info->dirY + info->planeY * cameraX;//direccion y del rayo en el espacio
-		
 		int mapX = (int)info->posX;//posicion x (¿del player?) en el mapa
 		int mapY = (int)info->posY;//posicion y (¿del player?) en el mapa
-
 		//length of ray from current position to next x or y-side
 		double sideDistX;//Longitud de la distancia del rayo al siguiente lado x
 		double sideDistY;//Longitud de la distancia del rayo al siguiente lado y
-		
 		 //length of ray from one x or y-side to next x or y-side
 		double deltaDistX = fabs(1 / rayDirX);//Le quita el signo a la direccion del rayo en x (por si es negativo)
 		double deltaDistY = fabs(1 / rayDirY);//Le quita el signo a la direccion del rayo en y (por si es negativo)
 		double perpWallDist;//Distancia perpendicular a la pared
-		
 		//what direction to step in x or y-direction (either +1 or -1)
 		int stepX;//Direccion en la que se mueve el rayo en x
 		int stepY;//Direccion en la que se mueve el rayo en y
-		
 		int hit = 0; //was there a wall hit?
 		int side; //was a NS or a EW wall hit?
-
 		if (rayDirX < 0)//Si la direccion del rayo en x es negativa
 		{
 			stepX = -1;//El rayo se mueve hacia la izquierda
@@ -114,7 +102,6 @@ void	calc(t_info *info)
 			stepY = 1;
 			sideDistY = (mapY + 1.0 - info->posY) * deltaDistY;
 		}
-
 		while (hit == 0)
 		{
 			//jump to next map square, OR in x-direction, OR in y-direction
@@ -137,10 +124,8 @@ void	calc(t_info *info)
 			perpWallDist = (mapX - info->posX + (1 - stepX) / 2) / rayDirX;
 		else
 			perpWallDist = (mapY - info->posY + (1 - stepY) / 2) / rayDirY;
-
 		//Calculate height of line to draw on screen
 		int lineHeight = (int)(height / perpWallDist);
-
 		//calculate lowest and highest pixel to fill in current stripe
 		int drawStart = -lineHeight / 2 + height / 2;
 		if(drawStart < 0)
@@ -148,7 +133,6 @@ void	calc(t_info *info)
 		int drawEnd = lineHeight / 2 + height / 2;
 		if(drawEnd >= height)
 			drawEnd = height - 1;
-
 		int	color;
 		if (worldMap[mapY][mapX] == 1)
 			color = 0xFF0000;
@@ -160,25 +144,19 @@ void	calc(t_info *info)
 			color = 0xFFFFFF;
 		else
 			color = 0xFFFF00;
-		
 		if (side == 1)
 			color = color / 2;
-
 		verLine(info, x, drawStart, drawEnd, color);
-		
 		x++;
 	}
 }
-
 int	main_loop(t_info *info)
 {
 	mlx_clear_window(info->mlx, info->win);
 	calc(info);
 	//mlx_put_image_to_window(info->mlx, info->win, &info->img, 0, 0);
-
 	return (0);
 }
-
 int	key_press(int key, t_info *info)
 {
 	if (key == K_W)
@@ -222,12 +200,10 @@ int	key_press(int key, t_info *info)
 		exit(0);
 	return (0);
 }
-
 int	main(void)
 {
 	t_info info;
 	info.mlx = mlx_init();
-
 	info.posX = 12;
 	info.posY = 5;
 	info.dirX = -1;
@@ -236,11 +212,8 @@ int	main(void)
 	info.planeY = 0.66;
 	info.moveSpeed = 0.05;
 	info.rotSpeed = 0.05;
-	
 	info.win = mlx_new_window(info.mlx, width, height, "mlx");
-
 	mlx_loop_hook(info.mlx, &main_loop, &info);
 	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
-
 	mlx_loop(info.mlx);
 }

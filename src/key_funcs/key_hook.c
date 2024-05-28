@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   key_hook.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/04 10:59:25 by guortun-          #+#    #+#             */
-/*   Updated: 2024/05/15 10:45:40 by guortun-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CUB3D.h"
-
 static	void	mouv_forward(t_cub *cub)
 {
 	if (cub->map.lines[(int)(cub->player.posY)]
@@ -24,7 +11,6 @@ static	void	mouv_forward(t_cub *cub)
 		[(int)(cub->player.posX)] == '0')
 		cub->player.posY += cub->player.dirY * cub->player.moveSpeed;
 }
-
 void	key_update(t_cub *cub)
 {
 	if (cub->key.key_w)
@@ -40,7 +26,6 @@ void	key_update(t_cub *cub)
 	else if (cub->key.key_ar_r)
 		rotate_player_right(cub);
 }
-
 int	key_press(int key, t_cub *cub)
 {
 	if (key == K_ESC)
@@ -59,7 +44,6 @@ int	key_press(int key, t_cub *cub)
 		cub->key.key_ar_l = 1;
 	return (0);
 }
-
 int	key_release(int key, t_cub *cub)
 {
 	if (key == K_ESC)

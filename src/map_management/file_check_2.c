@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   file_check_2.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/08 11:19:29 by guortun-          #+#    #+#             */
-/*   Updated: 2024/05/15 10:45:53 by guortun-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CUB3D.h"
-
 int	check_texture_direction(t_cub **cub, char *line, int *player_count,
 	int *map_length)
 {
@@ -40,12 +27,10 @@ int	check_texture_direction(t_cub **cub, char *line, int *player_count,
 	}
 	return (0);
 }
-
 static int	calc_lines(char *buffer)
 {
 	int	i;
 	int	lines;
-
 	i = 0;
 	lines = 0;
 	while (buffer[i] != '\0')
@@ -57,20 +42,17 @@ static int	calc_lines(char *buffer)
 	++lines;
 	return (lines);
 }
-
 static void	cpy_and_incr(char *line, char *buffer, int *i, int *j)
 {
 	line[*j] = buffer[*i];
 	(*j)++;
 }
-
 static void	init_values(int *i, int *j, int *k)
 {
 	*i = -1;
 	*j = 0;
 	*k = 0;
 }
-
 int	trim_and_fill(t_cub **cub, char *buffer, int *map_length,
 	int *player_count)
 {
@@ -79,7 +61,6 @@ int	trim_and_fill(t_cub **cub, char *buffer, int *map_length,
 	int		j;
 	int		file_lines;
 	int		k;
-
 	init_values(&i, &j, &k);
 	file_lines = calc_lines(buffer);
 	while (buffer[++i] != '\0')

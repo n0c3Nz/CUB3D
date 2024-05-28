@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/13 18:44:35 by guortun-          #+#    #+#             */
-/*   Updated: 2024/05/14 11:13:12 by guortun-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CUB3D.h"
-
 static	int	init_cub(int argc, char **argv, t_cub **cub, t_rnd **rnd)
 {
 	if (first_check(argc, argv))
@@ -26,12 +13,10 @@ static	int	init_cub(int argc, char **argv, t_cub **cub, t_rnd **rnd)
 		exit (ft_exit_free_img_error((*cub)));
 	return (0);
 }
-
 int	main(int argc, char **argv)
 {
 	t_cub		*cub;
 	t_rnd		*rnd;
-
 	rnd = NULL;
 	if (init_cub(argc, argv, &cub, &rnd))
 		return (1);

@@ -1,23 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   mlx_process.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 18:50:44 by guortun-          #+#    #+#             */
-/*   Updated: 2024/05/15 10:44:04 by guortun-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CUB3D.h"
-
 void	blscr_img(t_cub *cub)
 {
 	int		i;
 	char	*p;
 	int		j;
-
 	if (!cub->img.img)
 		return ;
 	i = 1;
@@ -33,12 +19,10 @@ void	blscr_img(t_cub *cub)
 		i++;
 	}
 }
-
 void	calc(t_cub *cub)
 {
 	struct timeval	te;
 	int				x;
-
 	x = 1;
 	cub->rnd->oldtime = cub->rnd->time;
 	while (x < width)
@@ -62,7 +46,6 @@ void	calc(t_cub *cub)
 		x++;
 	}
 }
-
 int	main_loop(t_cub *cub)
 {
 	blscr_img(cub);

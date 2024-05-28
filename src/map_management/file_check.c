@@ -1,21 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   file_check.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: smagniny <smagniny@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/07 01:38:26 by guortun-          #+#    #+#             */
-/*   Updated: 2024/05/14 14:32:12 by smagniny         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CUB3D.h"
-
 int	get_map(t_cub *cub, char *line, int *player_count, int *map_length)
 {
 	int	i;
-
 	i = 0;
 	if (cub == NULL || line == NULL || player_count == NULL
 		|| map_length == NULL)
@@ -40,7 +26,6 @@ int	get_map(t_cub *cub, char *line, int *player_count, int *map_length)
 	}
 	return ((*map_length)++, 0);
 }
-
 void	get_texture(t_cub **cub, char *line)
 {
 	if (*line == 'N' && *(line + 1) == 'O')
@@ -68,12 +53,10 @@ void	get_texture(t_cub **cub, char *line)
 		check_route((*cub)->map.ea);
 	}
 }
-
 int	get_color(t_cub *cub, char *line)
 {
 	char	*tmp;
 	int		rgb;
-
 	if (ft_strlen(line) < 8)
 		return (ft_putstr_err("Error: Invalid RGB format\n"));
 	if ((*line == 'F' || *line == 'C') && *(line + 1) == ' ')
@@ -91,7 +74,6 @@ int	get_color(t_cub *cub, char *line)
 		return (ft_putstr_err("Error: Invalid RGB format\n"));
 	return (0);
 }
-
 void	analyse_file(t_cub **cub, char *line, int *player_count
 	, int *map_length)
 {
@@ -101,14 +83,12 @@ void	analyse_file(t_cub **cub, char *line, int *player_count
 	else if (check_texture_direction(cub, line, player_count, map_length))
 		error_msg("Bad character on map\n");
 }
-
 int	check_file(int fd, t_cub **cub)
 {
 	ssize_t	bytes_read;
 	char	buffer[BUFFER];
 	int		map_length;
 	int		player_count;
-
 	map_length = 0;
 	player_count = 0;
 	bytes_read = read(fd, buffer, BUFFER);

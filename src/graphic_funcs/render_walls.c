@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   rnd_walls.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 16:00:15 by smagniny          #+#    #+#             */
-/*   Updated: 2024/04/29 20:26:33 by guortun-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CUB3D.h"
-
 void	create_plans(t_cub *cub, int x)
 {
 	cub->rnd->cameraX = (double)(2 * x / (double)width - 1);
@@ -20,7 +7,6 @@ void	create_plans(t_cub *cub, int x)
 	cub->rnd->mapX = (int)cub->player.posX;
 	cub->rnd->mapY = (int)cub->player.posY;
 }
-
 void	raydir(t_cub *cub, int x)
 {
 	if (cub->rnd->rayDirX == 0)
@@ -32,7 +18,6 @@ void	raydir(t_cub *cub, int x)
 	else
 		cub->rnd->deltaDistY = fabs(1 / cub->rnd->rayDirY);
 }
-
 void	raydir2(t_cub *cub, int x)
 {
 	cub->rnd->hit = 0;
@@ -61,7 +46,6 @@ void	raydir2(t_cub *cub, int x)
 			* cub->rnd->deltaDistY;
 	}
 }
-
 void	ray2wall(t_cub *cub)
 {
 	while (cub->rnd->hit == 0)
@@ -84,7 +68,6 @@ void	ray2wall(t_cub *cub)
 			cub->rnd->hit = 1;
 	}
 }
-
 void	which_side_ray_collide(t_cub *cub)
 {
 	if (cub->rnd->side == 0)

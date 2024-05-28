@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-
 static int	find_long_line(char *buffer)
 {
 	int i;
 	int prev_chars;
 	int chars;
-
 	chars = 0;
 	prev_chars = 0;
 	i = 0;
@@ -25,7 +23,6 @@ static int	find_long_line(char *buffer)
 	}
 	return prev_chars;
 }
-
 static char	**allocate_memory(int lines)
 {
     char **mold = malloc(sizeof(char *) * lines);
@@ -33,7 +30,6 @@ static char	**allocate_memory(int lines)
         return NULL;//msg_error("Error: malloc()\n");
     return mold;
 }
-
 void fill_mold(char **lines, char *buffer, int line_length)
 {
     int i = 0, j = 0, k = 0;
@@ -80,7 +76,6 @@ void	fill_map(t_cub *cub, char *buffer)
 	if (!cub->map.lines)
 		error_msg("Error: malloc()\n");
 	fill_mold(cub->map.lines, buffer, line_length);
-
 }
 int main(void)
 {

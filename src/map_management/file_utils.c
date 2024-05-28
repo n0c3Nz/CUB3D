@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   file_utils.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/06 19:16:28 by guortun-          #+#    #+#             */
-/*   Updated: 2024/05/15 10:46:10 by guortun-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "CUB3D.h"
-
 int	check_map_data(t_cub **cub, char *buffer)
 {
 	if ((*cub)->map.no == NULL || (*cub)->map.so == NULL
@@ -23,11 +10,9 @@ int	check_map_data(t_cub **cub, char *buffer)
 		return (1);
 	return (0);
 }
-
 int	check_limit(char *line)
 {
 	int	i;
-
 	i = 0;
 	while (line[i] != '\0')
 	{
@@ -37,11 +22,9 @@ int	check_limit(char *line)
 	}
 	return (0);
 }
-
 void	check_route(char *route)
 {
 	int	fd;
-
 	if (*route == '\0')
 		error_msg("Error: Invalid texture route");
 	if (ft_strncmp(route + ft_strlen(route) - 4, ".xpm", 4))
@@ -51,13 +34,11 @@ void	check_route(char *route)
 		error_msg("Error: Invalid texture route");
 	close(fd);
 }
-
 int	rgb_to_hex(t_cub *cub, char *rgb)
 {
 	char	**rgb_split;
 	int		hex;
 	int		i;
-
 	i = 0;
 	if (ft_strlen(rgb) < 5)
 		exit (0);
@@ -80,7 +61,6 @@ int	rgb_to_hex(t_cub *cub, char *rgb)
 	}
 	return (process_rgb(rgb_split, rgb, cub));
 }
-
 int	process_line(int *map_length, char *line, int *i)
 {
 	if (ft_strlen(line) == 0)

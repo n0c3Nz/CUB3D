@@ -1,21 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   freeee.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/01 12:47:18 by smagniny          #+#    #+#             */
-/*   Updated: 2024/05/15 10:46:31 by guortun-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../inc/CUB3D.h"
-
 void	free_map(t_cub *cub)
 {
 	int	i;
-
 	i = 0;
 	if (cub->map.m_f-- > 0)
 		free(cub->map.no);
@@ -27,7 +13,6 @@ void	free_map(t_cub *cub)
 		free(cub->map.ea);
 	exit(0);
 }
-
 int	ft_exit_free_img_error(t_cub *cub)
 {
 	mlx_destroy_image(cub->mlx, cub->img.img);
@@ -44,7 +29,6 @@ int	ft_exit_free_img_error(t_cub *cub)
 	free_map(cub);
 	return (1);
 }
-
 int	ft_exit_free_img(t_cub *cub)
 {
 	mlx_destroy_image(cub->mlx, cub->img.img);
@@ -56,13 +40,11 @@ int	ft_exit_free_img(t_cub *cub)
 	free_map(cub);
 	return (0);
 }
-
 void	error_msg(char *msg)
 {
 	ft_putstr_err(msg);
 	exit(1);
 }
-
 int	ft_putstr_err(char *str)
 {
 	ft_putstr_fd(str, 2);

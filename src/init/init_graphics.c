@@ -1,21 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   init_graphics.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: guortun- <guortun-@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/01 11:54:55 by guortun-          #+#    #+#             */
-/*   Updated: 2024/05/15 10:45:33 by guortun-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../inc/CUB3D.h"
-
 int	first_check(int argc, char **argv)
 {
 	int	fd;
-
 	if (argc != 2)
 		return (ft_putstr_err("Error: Invalid number of arguments\n"));
 	if (ft_strncmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub", 4))
@@ -26,12 +12,10 @@ int	first_check(int argc, char **argv)
 	close(fd);
 	return (0);
 }
-
 static	int	create_image_from_xpm(t_cub *cub, int img_num, char *texpath)
 {
 	int	x_size_tex;
 	int	y_size_tex;
-
 	x_size_tex = 64;
 	y_size_tex = 64;
 	cub->sprites[img_num].img = mlx_xpm_file_to_image(cub->mlx,
@@ -45,11 +29,9 @@ static	int	create_image_from_xpm(t_cub *cub, int img_num, char *texpath)
 			&cub->sprites[img_num].endian);
 	return (0);
 }
-
 int	init_textures(t_cub *cub)
 {
 	int	err;
-
 	err = 0;
 	err = create_image_from_xpm(cub, 0, cub->map.no);
 	err = create_image_from_xpm(cub, 1, cub->map.so);
@@ -57,7 +39,6 @@ int	init_textures(t_cub *cub)
 	err = create_image_from_xpm(cub, 3, cub->map.we);
 	return (err);
 }
-
 int	init_mlx(t_cub **cub)
 {
 	(*cub)->mlx = mlx_init();
